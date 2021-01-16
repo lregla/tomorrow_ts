@@ -35,15 +35,5 @@
     "@typescript-eslint/semi": ["error"],
     "import/no-dynamic-require": "off",
     "vue/comment-directive": "off"
-  },
-  "settings": {
-    "import/resolver": {
-      "alias": [
-        ["@", "./src"]
-      ],
-      "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
-      }
-    }
   }
 }
