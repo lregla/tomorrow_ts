@@ -2,6 +2,9 @@ const path = require('path');
 const pathOutput = path.resolve(__dirname, 'dist');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlMinimizerPlugin = require('html-minimizer-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const env = process.env.NODE_ENV;
 const isProd = env === 'production';
@@ -35,7 +38,14 @@ module.exports = {
 		path: pathOutput
 	},
 	optimization: {
-    minimize: isProd
+		minimize: isProd,
+		minimizer: [
+			new HtmlMinimizerPlugin(),
+			new CssMinimizerPlugin(),
+			new TerserPlugin({
+				extractComments: true,
+			})
+		]
   },
 	resolve: {
 		extensions: ['.js', '.ts']
@@ -46,7 +56,7 @@ module.exports = {
 				exclude: /\.d\.ts/
 			},
 			{
-				test: /\.html/,
+				test: /\.html$/i,
 				loader: 'file-loader',
 				options: {
 					name: '[name].[ext]'
