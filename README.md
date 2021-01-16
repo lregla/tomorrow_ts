@@ -6,6 +6,9 @@ HUGE thanks to my good friend [@jeremenichelli]( https://github.com/jeremenichel
 ## Commands
 
 Start: `npm run start`
+
 Build: `npm run build`
+
 Lint: `npm run lint`
+
 Fix Lint: `npm run lint:fix`
