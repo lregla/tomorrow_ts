@@ -10,71 +10,72 @@ const env = process.env.NODE_ENV;
 const isProd = env === 'production';
 
 const plugins = [
-	new MiniCssExtractPlugin({ filename: 'main.css' })
+  new MiniCssExtractPlugin({
+    filename: 'main.css'
+  })
 ]
 
 if (!isProd) {
-	plugins.push(new webpack.HotModuleReplacementPlugin())
+  plugins.push(new webpack.HotModuleReplacementPlugin())
 }
 
 module.exports = {
-	mode: isProd ? env : 'development',
-	devServer: {
-		contentBase: pathOutput,
-		compress: true,
-		port: 8080
-	},
-	entry: [
-		'multi-entry-loader?include=./src/**/*.html!',
-		'multi-entry-loader?include=./src/**/*.ts!',
-    'multi-entry-loader?include=./src/**/*.js!',
-		'multi-entry-loader?include=./src/shaders/**/*.glsl!',
-		'multi-entry-loader?include=./src/shaders/**/*.frag!',
-		'multi-entry-loader?include=./src/shaders/**/*.vert!'
-	],
-  devtool: isProd ? 'source-map' : 'inline-source-map',
-	output:{
-		filename: 'main.js',
-		path: pathOutput
-	},
-	optimization: {
-		minimize: isProd,
-		minimizer: [
-			new HtmlMinimizerPlugin(),
-			new CssMinimizerPlugin(),
-			new TerserPlugin({
-				extractComments: true,
-			})
-		]
+  mode: isProd ? env : 'development',
+  devServer: {
+    contentBase: pathOutput,
+    compress: true,
+    port: 8080
   },
-	resolve: {
-		extensions: ['.js', '.ts']
-	},
-	module: {
-		rules: [
-			{
-				exclude: /\.d\.ts/
-			},
-			{
-				test: /\.html$/i,
-				loader: 'file-loader',
-				options: {
-					name: '[name].[ext]'
-				}
-			},
-			{
-				test: /\.(glsl|vert|frag)$/,
-				use: 'raw-loader'
-			},
-			{ 
+  entry: [
+    'multi-entry-loader?include=./src/**/*.html!',
+    'multi-entry-loader?include=./src/**/*.ts!',
+    'multi-entry-loader?include=./src/**/*.js!',
+    'multi-entry-loader?include=./src/shaders/**/*.glsl!',
+    'multi-entry-loader?include=./src/shaders/**/*.frag!',
+    'multi-entry-loader?include=./src/shaders/**/*.vert!'
+  ],
+  devtool: isProd ? 'source-map' : 'inline-source-map',
+  output: {
+    filename: 'main.js',
+    path: pathOutput
+  },
+  optimization: {
+    minimize: isProd,
+    minimizer: [
+      new HtmlMinimizerPlugin(),
+      new CssMinimizerPlugin(),
+      new TerserPlugin({
+        extractComments: true,
+      })
+    ]
+  },
+  resolve: {
+    extensions: ['.js', '.ts']
+  },
+  module: {
+    rules: [{
+        exclude: /\.d\.ts/
+      },
+      {
+        test: /\.html$/i,
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]'
+        }
+      },
+      {
+        test: /\.(glsl|vert|frag)$/,
+        use: 'raw-loader'
+      },
+      {
         test: /\.tsx?$/,
         loader: 'ts-loader'
-			},
-			{ 
+      },
+      {
         test: /\.s[ac]ss$/i,
-				use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
-			}
-		]
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+      }
+    ]
   },
-	plugins
+  plugins
 };
